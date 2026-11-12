@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KosKu – Sistem Manajemen Kos-kosan</title>
+<style>
+:root{--bg:#f3f8f7;--card:#fff;--tx:#14201f;--mu:#5d706e;--bd:#dce8e6;--pr:#2a9d8f;--pr2:#1f7a6f;--sb:#12202b;--ok:#1f9d63;--okb:#dff5e9;--wr:#c27a0a;--wrb:#fdf0d8;--er:#c0392b;--erb:#fbe3e0;--in:#2a6fdb;--inb:#e0ebfd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1716;--card:#16221f;--tx:#e6f0ee;--mu:#93a9a5;--bd:#26372f;--pr:#3dbeaf;--pr2:#2a9d8f;--sb:#0a1219;--okb:#143626;--wrb:#3a2d10;--erb:#3d1b17;--inb:#16294a;--ok:#4cd08e;--wr:#f0b04a;--er:#ff7f70;--in:#6ea2ff}}
+:root[data-theme="dark"]{--bg:#0e1716;--card:#16221f;--tx:#e6f0ee;--mu:#93a9a5;--bd:#26372f;--pr:#3dbeaf;--pr2:#2a9d8f;--sb:#0a1219;--okb:#143626;--wrb:#3a2d10;--erb:#3d1b17;--inb:#16294a;--ok:#4cd08e;--wr:#f0b04a;--er:#ff7f70;--in:#6ea2ff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:60}
+button,input,select{font:inherit;color:inherit}
+#side{position:fixed;top:0;left:0;bottom:0;width:224px;background:var(--sb);color:#cfe0de;padding:calc(16px + env(safe-area-inset-top,0px)) 12px 16px;z-index:50;transition:transform .2s;display:flex;flex-direction:column;gap:4px}
+.lg{display:flex;gap:10px;align-items:center;margin-bottom:14px;color:#fff;font-weight:700;font-size:16px}.lg i{background:var(--pr);border-radius:9px;width:34px;height:34px;display:grid;place-items:center;font-style:normal}
+#side a{display:flex;gap:10px;padding:9px 12px;border-radius:9px;color:#b9cfcc;text-decoration:none;cursor:pointer}
+#side a.on{background:var(--pr);color:#fff}#side a:hover:not(.on){background:#ffffff14}
+.bot{margin-top:auto}
+#main{margin-left:224px;min-height:100vh}
+#top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--card);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:12px;padding:10px 20px}
+#top b{flex:1}#mb{display:none;border:1px solid var(--bd);background:none;border-radius:8px;padding:6px 10px}
+#ct{padding:20px;max-width:1200px}
+h1{margin:0 0 2px;font-size:22px}.sub{color:var(--mu);margin-bottom:16px}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.btn{background:var(--pr);color:#fff;border:0;border-radius:9px;padding:9px 14px;cursor:pointer;font-weight:600}.btn:hover{background:var(--pr2)}
+.btn.g{background:none;color:var(--tx);border:1px solid var(--bd)}.btn.s{padding:5px 9px;font-size:12px}.btn.d{background:var(--erb);color:var(--er)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px}
+.st small{color:var(--mu)}.st div{font-size:24px;font-weight:700;margin-top:4px}
+.g1{border-left:4px solid var(--pr)}.g2{border-left:4px solid var(--ok)}.g3{border-left:4px solid var(--wr)}.g4{border-left:4px solid var(--er)}
+.two{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.sc{overflow-x:auto;border:1px solid var(--bd);border-radius:12px;background:var(--card)}
+table{width:100%;border-collapse:collapse;min-width:620px}th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--bd);white-space:nowrap}
+th{color:var(--mu);font-size:12px;font-weight:600}tr:last-child td{border:0}
+.tg{padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;display:inline-block}
+.Terisi,.Lunas,.Dikonfirmasi{background:var(--okb);color:var(--ok)}.Tersedia{background:var(--inb);color:var(--in)}
+.Dipesan,.Pending,.Maintenance{background:var(--wrb);color:var(--wr)}.Terlambat{background:var(--erb);color:var(--er)}
+.fl{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.fl input,.fl select,.fm input,.fm select{background:var(--card);border:1px solid var(--bd);border-radius:9px;padding:9px 12px;min-width:150px}.fl input{flex:1}
+.bars{display:flex;align-items:flex-end;gap:10px;height:170px;padding-top:10px}.bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:11px;color:var(--mu)}
+.bars i{display:block;width:100%;max-width:46px;background:var(--pr);border-radius:6px 6px 0 0;min-height:2px}
+.ob{margin:12px 0}.ob .t{height:10px;background:var(--bd);border-radius:9px;overflow:hidden;margin-top:4px}.ob .t i{display:block;height:100%;background:var(--pr)}
+.ks{border-top:4px solid var(--pr)}.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0;text-align:center}.mini div{background:var(--bg);border-radius:9px;padding:8px;font-size:12px;color:var(--mu)}.mini b{display:block;font-size:18px;color:var(--tx)}
+.row{display:flex;justify-content:space-between;gap:8px;padding:4px 0}.row span:first-child{color:var(--mu)}
+#md{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:80;padding:16px}#md.on{display:flex}
+.box{background:var(--card);border-radius:14px;padding:20px;width:100%;max-width:420px;max-height:90vh;overflow:auto}.fm label{display:block;margin:10px 0 4px;color:var(--mu);font-size:12px}.fm input,.fm select{width:100%}
+#lg{min-height:100vh;display:grid;place-items:center;padding:16px;background:var(--bg)}#lg .box{max-width:360px;text-align:center}
+@media(max-width:820px){#side{transform:translateX(-100%)}#side.on{transform:none;box-shadow:0 0 40px #0008}#main{margin-left:0}#mb{display:block}#ct{padding:14px}}
+@media print{#side,#top,.btn{display:none!important}#main{margin:0}}
+</style></head><body>
+<div id="app"></div><div id="md"><div class="box"><div id="mdc"></div></div></div>
+<script>
+const K='kosku_v1',MS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const uid=()=>Math.random().toString(36).slice(2,9),$=s=>document.querySelector(s);
+const rp=n=>'Rp '+Math.round(n).toLocaleString('id-ID');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function seed(){
+ const ko=[['Kosan Harmoni Residence','Jl. Harmoni No. 10','Campur'],['Kosan Putri Sakura','Jl. Kebon Jeruk No. 25','Putri'],['Kosan Putra Bangunan Sejahtera','Jl. Gatot Subroto No. 88','Putra']].map((a,i)=>({id:'k'+i,nama:a[0],alamat:a[1],tipe:a[2]}));
+ const ka=[[0,'A101',1,'Standar',1500000,'Terisi'],[0,'A102',1,'Standar',1500000,'Terisi'],[0,'A103',1,'Deluxe',2000000,'Tersedia'],[0,'A201',2,'Deluxe',2000000,'Terisi'],[0,'A202',2,'Suite',2800000,'Tersedia'],[0,'A203',2,'Suite',2800000,'Maintenance'],[1,'B101',1,'Standar',1800000,'Terisi'],[1,'B102',1,'Standar',1800000,'Terisi'],[1,'B201',2,'Deluxe',2300000,'Dipesan'],[2,'C101',1,'Standar',1600000,'Terisi'],[2,'C102',1,'Standar',1600000,'Tersedia']].map((a,i)=>({id:'m'+i,kosan:'k'+a[0],no:a[1],lantai:a[2],tipe:a[3],harga:a[4],status:a[5]}));
+ const nm=[['Fadlun Ulfa Hafifah','081234500011','m0'],['Lily Of The Valey','081234500012','m1'],['Vian Mambo','081234500013','m3'],['Zahra Wulandari','081234500014','m6'],['Nadi Al Qibtia','081234500015','m7'],['Pasanda Rizky','081234500016','m9']];
+ const pe=nm.map((a,i)=>({id:'p'+i,nama:a[0],hp:a[1],kamar:a[2],masuk:'2026-0'+(i%3+1)+'-05'}));
+ const last=['Lunas','Pending','Terlambat','Lunas','Pending','Lunas'],tr=[];
+ pe.forEach((p,i)=>{const h=ka.find(k=>k.id===p.kamar).harga;for(let m=6;m<=11;m++){const bl='2026-'+String(m).padStart(2,'0'),st=m<11?'Lunas':last[i];tr.push({id:uid(),penghuni:p.id,bulan:bl,jumlah:h,status:st,tgl:st==='Lunas'?bl+'-05':''})}});
+ return{kosan:ko,kamar:ka,penghuni:pe,transaksi:tr,booking:[{id:'b1',nama:'Galih Permana',hp:'081234500099',kamar:'m8',dp:500000,masuk:'2026-12-01',status:'Pending'}]};
+}
+let S;try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
+if(!S||!S.kosan)S=seed();
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+let authed=false;try{authed=sessionStorage.getItem('kk_a')==='1'}catch(e){}
+const Q={ks:'',st:'',q:''};
+const kn=id=>(S.kosan.find(k=>k.id===id)||{}).nama||'-',km=id=>S.kamar.find(k=>k.id===id)||{},pn=id=>(S.penghuni.find(p=>p.id===id)||{}).nama||'-';
+const tag=s=>`<span class="tg ${s}">${s}</span>`;
+const tbl=(h,r)=>`<div class="sc"><table><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${r.join('')||`<tr><td colspan="${h.length}">Belum ada data</td></tr>`}</table></div>`;
+const del=(t,id)=>`<button class="btn s d" data-a="del" data-t="${t}" data-i="${id}">Hapus</button>`;
+const now='2026-11',inc=m=>S.transaksi.filter(t=>t.status==='Lunas'&&t.bulan===m).reduce((a,t)=>a+t.jumlah,0);
+const occ=()=>{const n=S.kamar.length||1;return Math.round(S.kamar.filter(k=>k.status==='Terisi').length/n*100)};
+function months(){return[6,7,8,9,10,11].map(m=>{const b='2026-'+String(m).padStart(2,'0');return{l:MS[m-1],v:inc(b)}})}
+function chart(){const d=months(),mx=Math.max(...d.map(x=>x.v),1);return`<div class="bars">${d.map(x=>`<div><span>${(x.v/1e6).toFixed(1)}jt</span><i style="height:${x.v/mx*120}px"></i>${x.l}</div>`).join('')}</div>`}
+const T={
+ dashboard(){const k=S.kamar,t=k.filter(x=>x.status==='Terisi').length,late=S.transaksi.filter(x=>x.status==='Terlambat').length;
+  return`<div class="hd"><div><h1>Dashboard</h1><div class="sub">Ringkasan data kos Anda</div></div></div>
+  <div class="grid"><div class="card st g1"><small>Total Kosan</small><div>${S.kosan.length}</div><small>${k.length} kamar total</small></div>
+  <div class="card st g2"><small>Kamar Terisi</small><div>${t}</div><small>Okupansi ${occ()}%</small></div>
+  <div class="card st g3"><small>Pendapatan ${MS[10]} 2026</small><div>${rp(inc(now))}</div></div>
+  <div class="card st g4"><small>Tagihan Terlambat</small><div>${late}</div><small>${S.transaksi.filter(x=>x.status==='Pending').length} pending</small></div></div>
+  <div class="two"><div class="card"><b>Pendapatan Bulanan</b>${chart()}</div><div class="card"><b>Okupansi per Kosan</b>${S.kosan.map(o=>{const a=k.filter(x=>x.kosan===o.id),b=a.filter(x=>x.status==='Terisi').length,p=a.length?Math.round(b/a.length*100):0;return`<div class="ob"><div class="row"><span>${esc(o.nama)}</span><span>${b}/${a.length} (${p}%)</span></div><div class="t"><i style="width:${p}%"></i></div></div>`}).join('')}</div></div>`},
+ kosan(){return`<div class="hd"><div><h1>Master Kosan</h1><div class="sub">Kelola data properti kosan Anda</div></div><button class="btn" data-a="add" data-t="kosan">+ Tambah Kosan</button></div>
+  <div class="grid">${S.kosan.map(o=>{const a=S.kamar.filter(x=>x.kosan===o.id),b=a.filter(x=>x.status==='Terisi').length;return`<div class="card ks"><div class="row"><b>${esc(o.nama)}</b>${tag(o.tipe==='Campur'?'Tersedia':'Pending').replace(/>.*</,'>'+esc(o.tipe)+'<')}</div><div class="sub" style="margin:0">${esc(o.alamat)}</div><div class="mini"><div><b>${a.length}</b>Total</div><div><b>${b}</b>Terisi</div><div><b>${a.length-b}</b>Lainnya</div></div>${del('kosan',o.id)}</div>`}).join('')}</div>`},
+ kamar(){return`<div class="hd"><div><h1>Master Kamar</h1><div class="sub">Kelola data kamar di semua kosan</div></div><button class="btn" data-a="add" data-t="kamar">+ Tambah Kamar</button></div>
+  <div class="fl"><select data-q="ks"><option value="">Semua Kosan</option>${S.kosan.map(o=>`<option value="${o.id}" ${Q.ks===o.id?'selected':''}>${esc(o.nama)}</option>`).join('')}</select><select data-q="st"><option value="">Semua Status</option>${['Tersedia','Terisi','Dipesan','Maintenance'].map(s=>`<option ${Q.st===s?'selected':''}>${s}</option>`).join('')}</select></div><div id="tb">${TB.kamar()}</div>`},
+ penghuni(){return`<div class="hd"><div><h1>Penghuni</h1><div class="sub">Data penghuni dan kamar yang ditempati</div></div><button class="btn" data-a="add" data-t="penghuni">+ Tambah Penghuni</button></div>
+  <div class="fl"><input data-q="q" placeholder="Cari nama penghuni..." value="${esc(Q.q)}"></div><div id="tb">${TB.penghuni()}</div>`},
+ booking(){return`<div class="hd"><div><h1>Booking &amp; Reservasi</h1><div class="sub">Kelola reservasi kamar baru</div></div><button class="btn" data-a="add" data-t="booking">+ Tambah Booking</button></div>
+  <div class="grid">${S.booking.map(b=>{const k=km(b.kamar);return`<div class="card"><div class="row"><b>${esc(b.nama)}</b>${tag(b.status)}</div><div class="sub" style="margin:0 0 8px">${esc(b.hp)}</div><div class="row"><span>Kamar</span><span>${esc(k.no||'-')}</span></div><div class="row"><span>Kosan</span><span>${esc(kn(k.kosan))}</span></div><div class="row"><span>Harga</span><span>${rp(k.harga||0)}/bln</span></div><div class="row"><span>Rencana masuk</span><span>${esc(b.masuk)}</span></div><div class="row"><span>DP</span><span>${rp(b.dp)}</span></div><div style="margin-top:10px;display:flex;gap:8px">${b.status==='Pending'?`<button class="btn s" data-a="conf" data-i="${b.id}">Konfirmasi</button>`:''}${del('booking',b.id)}</div></div>`}).join('')||'<div class="card">Belum ada booking</div>'}</div>`},
+ transaksi(){const s=x=>S.transaksi.filter(t=>x?t.status===x:1).reduce((a,t)=>a+t.jumlah,0);
+  return`<div class="hd"><div><h1>Transaksi &amp; Pembayaran</h1><div class="sub">Kelola tagihan dan pembayaran penghuni</div></div><button class="btn" data-a="add" data-t="transaksi">+ Tambah Transaksi</button></div>
+  <div class="grid"><div class="card st"><small>Total Tagihan</small><div>${rp(s())}</div></div><div class="card st g2"><small>Sudah Lunas</small><div>${rp(s('Lunas'))}</div></div><div class="card st g3"><small>Pending</small><div>${rp(s('Pending'))}</div></div><div class="card st g4"><small>Terlambat</small><div>${rp(s('Terlambat'))}</div></div></div>
+  <div class="fl"><select data-q="st"><option value="">Semua Status</option>${['Lunas','Pending','Terlambat'].map(x=>`<option ${Q.st===x?'selected':''}>${x}</option>`).join('')}</select></div><div id="tb">${TB.transaksi()}</div>`},
+ laporan(){const tot=S.transaksi.filter(t=>t.status==='Lunas').reduce((a,t)=>a+t.jumlah,0);
+  return`<div class="hd"><div><h1>Laporan</h1><div class="sub">Analisis data kos Anda</div></div><button class="btn g" onclick="window.print()">Cetak</button></div>
+  <div class="grid"><div class="card st g1"><small>Total Pendapatan</small><div>${rp(tot)}</div></div><div class="card st g2"><small>Okupansi Rate</small><div>${occ()}%</div></div><div class="card st"><small>Total Penghuni</small><div>${S.penghuni.length}</div></div><div class="card st g4"><small>Tagihan Terlambat</small><div>${S.transaksi.filter(t=>t.status==='Terlambat').length}</div></div></div>
+  <div class="two"><div class="card"><b>Pendapatan Bulanan 2026</b>${chart()}</div><div class="card"><b>Ringkasan Pendapatan</b>${months().reverse().map(m=>`<div class="row"><span>${m.l}</span><b>${rp(m.v)}</b></div>`).join('')}</div></div>`}
+};
+const TB={
+ kamar(){return tbl(['No. Kamar','Kosan','Lantai','Tipe','Status','Harga/Bulan','Aksi'],S.kamar.filter(k=>(!Q.ks||k.kosan===Q.ks)&&(!Q.st||k.status===Q.st)).map(k=>`<tr><td><b>${esc(k.no)}</b></td><td>${esc(kn(k.kosan))}</td><td>${k.lantai}</td><td>${esc(k.tipe)}</td><td>${tag(k.status)}</td><td>${rp(k.harga)}</td><td>${del('kamar',k.id)}</td></tr>`))},
+ penghuni(){return tbl(['Nama','No. HP','Kamar','Kosan','Tgl Masuk','Aksi'],S.penghuni.filter(p=>p.nama.toLowerCase().includes(Q.q.toLowerCase())).map(p=>{const k=km(p.kamar);return`<tr><td><b>${esc(p.nama)}</b></td><td>${esc(p.hp)}</td><td>${esc(k.no||'-')}</td><td>${esc(kn(k.kosan))}</td><td>${esc(p.masuk)}</td><td>${del('penghuni',p.id)}</td></tr>`}))},
+ transaksi(){return tbl(['Penghuni','Kamar','Bulan','Jumlah','Status','Tgl Bayar','Aksi'],[...S.transaksi].filter(t=>!Q.st||t.status===Q.st).sort((a,b)=>b.bulan.localeCompare(a.bulan)).slice(0,40).map(t=>{const p=S.penghuni.find(x=>x.id===t.penghuni)||{};return`<tr><td><b>${esc(pn(t.penghuni))}</b></td><td>${esc(km(p.kamar).no||'-')}</td><td>${t.bulan}</td><td>${rp(t.jumlah)}</td><td>${tag(t.status)}</td><td>${t.tgl||'-'}</td><td>${t.status!=='Lunas'?`<button class="btn s" data-a="lunas" data-i="${t.id}">Lunas</button> `:''}${del('transaksi',t.id)}</td></tr>`}))}
+};
+const opt=(a,v,l)=>a.map(x=>[x[v],x[l]]);
+const F={
+ kosan:()=>[['nama','Nama Kosan'],['alamat','Alamat'],['tipe','Tipe','s',[['Campur','Campur'],['Putri','Putri'],['Putra','Putra']]]],
+ kamar:()=>[['kosan','Kosan','s',opt(S.kosan,'id','nama')],['no','No. Kamar'],['lantai','Lantai','n'],['tipe','Tipe','s',[['Standar','Standar'],['Deluxe','Deluxe'],['Suite','Suite']]],['harga','Harga/Bulan (Rp)','n'],['status','Status','s',['Tersedia','Terisi','Dipesan','Maintenance'].map(x=>[x,x])]],
+ penghuni:()=>[['nama','Nama Lengkap'],['hp','No. HP'],['kamar','Kamar','s',S.kamar.filter(k=>k.status==='Tersedia').map(k=>[k.id,k.no+' – '+kn(k.kosan)])],['masuk','Tanggal Masuk','d']],
+ booking:()=>[['nama','Nama Calon Penghuni'],['hp','No. HP'],['kamar','Kamar','s',S.kamar.filter(k=>k.status==='Tersedia').map(k=>[k.id,k.no+' – '+kn(k.kosan)])],['dp','DP (Rp)','n'],['masuk','Rencana Masuk','d']],
+ transaksi:()=>[['penghuni','Penghuni','s',opt(S.penghuni,'id','nama')],['bulan','Bulan (YYYY-MM)'],['jumlah','Jumlah (Rp)','n'],['status','Status','s',['Pending','Lunas','Terlambat'].map(x=>[x,x])]]
+};
+const NAV=[['dashboard','▦','Dashboard'],['kosan','⌂','Kosan'],['kamar','▤','Kamar'],['penghuni','☺','Penghuni'],['booking','✎','Booking'],['transaksi','$','Transaksi'],['laporan','▥','Laporan']];
+function pg(){const h=location.hash.slice(1);return T[h]?h:'dashboard'}
+function render(){
+ if(!authed){$('#app').innerHTML=`<div id="lg"><div class="box fm"><div class="lg" style="justify-content:center;color:var(--tx)"><i>⌂</i>KosKu</div><h2 style="margin:0">Masuk ke Akun Anda</h2><div class="sub">Demo: email &amp; password sudah terisi</div><form id="lf" style="text-align:left"><label>Email</label><input id="em" value="admin@kosku.id"><label>Password</label><input id="pw" type="password" value="admin123"><button class="btn" style="width:100%;margin-top:16px">Masuk</button></form></div></div>`;return}
+ const p=pg();
+ $('#app').innerHTML=`<aside id="side"><div class="lg"><i>⌂</i>KosKu</div>${NAV.map(n=>`<a href="#${n[0]}" class="${n[0]===p?'on':''}"><span>${n[1]}</span>${n[2]}</a>`).join('')}<a class="bot" data-a="out"><span>⎋</span>Keluar</a></aside>
+ <div id="main"><div id="top"><button id="mb" data-a="menu">☰</button><b>Sistem Kosan</b><span>Admin</span></div><div id="ct">${T[p]()}</div></div>`;
+}
+function openForm(t){const f=F[t]();$('#mdc').innerHTML=`<form id="af" data-t="${t}" class="fm"><h2 style="margin:0">Tambah ${t[0].toUpperCase()+t.slice(1)}</h2>${f.map(x=>`<label>${x[1]}</label>${x[2]==='s'?`<select name="${x[0]}" required>${x[3].map(o=>`<option value="${esc(o[0])}">${esc(o[1])}</option>`).join('')}</select>`:`<input name="${x[0]}" type="${x[2]==='n'?'number':x[2]==='d'?'date':'text'}" required>`}`).join('')}<div style="display:flex;gap:8px;margin-top:16px"><button class="btn">Simpan</button><button type="button" class="btn g" data-a="close">Batal</button></div></form>`;$('#md').classList.add('on')}
+const close=()=>$('#md').classList.remove('on');
+document.addEventListener('submit',e=>{e.preventDefault();const f=e.target;
+ if(f.id==='lf'){authed=true;try{sessionStorage.setItem('kk_a','1')}catch(x){}render();return}
+ if(f.id!=='af')return;const t=f.dataset.t,o={id:uid()};
+ F[t]().forEach(x=>{const v=f.elements[x[0]].value;o[x[0]]=x[2]==='n'?Number(v):v});
+ if(t==='transaksi')o.tgl=o.status==='Lunas'?now+'-13':'';
+ if(t==='booking'){o.status='Pending';km(o.kamar).status='Dipesan'}
+ if(t==='penghuni')km(o.kamar).status='Terisi';
+ S[t].push(o);save();close();render()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,i=b.dataset.i,t=b.dataset.t;
+ if(a==='menu')$('#side').classList.toggle('on');
+ if(a==='close')close();
+ if(a==='out'){authed=false;try{sessionStorage.removeItem('kk_a')}catch(x){}render()}
+ if(a==='add')openForm(t);
+ if(a==='del'&&confirm('Hapus data ini?')){if(t==='booking'){const x=S.booking.find(y=>y.id===i),k=x&&km(x.kamar);if(k&&k.status==='Dipesan')k.status='Tersedia'}S[t]=S[t].filter(x=>x.id!==i);save();render()}
+ if(a==='conf'){const x=S.booking.find(y=>y.id===i);x.status='Dikonfirmasi';km(x.kamar).status='Terisi';save();render()}
+ if(a==='lunas'){const x=S.transaksi.find(y=>y.id===i);x.status='Lunas';x.tgl=now+'-13';save();render()}});
+document.addEventListener('input',e=>{const q=e.target.dataset.q;if(!q)return;Q[q]=e.target.value;$('#tb').innerHTML=TB[pg()]()});
+window.addEventListener('hashchange',()=>{Q.ks=Q.st=Q.q='';render();window.scrollTo(0,0)});
+render();
+</script></body></html>
